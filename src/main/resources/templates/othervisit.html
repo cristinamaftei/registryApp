@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" href="/bootstrap.min.css" media="screen" />
+
+</head>
+<body>
+
+	<div class="container" style="margin-top: 50px">
+		<div>
+			<img src="logo.png" class="img-responsive left-block" width="100"
+				height="50" alt="Logo" />
+		</div>
+		<h3 align="center">Please fill the missing information </h3>
+		<br />
+
+		<form action="#" th:action="@{/saveothervisit}" method="post">
+			<table>
+				<tr>
+					<td>Full Name:</td>
+					<td height="40px"><input type="text" th:field="*{visitor.fullName}" />
+					<input type="hidden" th:field="*{visitor.id}" /></td>
+				</tr>
+
+				<tr>
+					<td>Identity card / passport number:</td>
+					<td height="40px"><input type="text"
+						th:field="*{visitor.identityCardInfo}" /></td>
+				</tr>
+				 <tr>
+					<td height="40px">Deloitte employee visited:</td>
+					<td><select class="dropdown" th:field="*{visit.employee}"
+						name="employeeID" id="employeeID">
+							<option value="">Select Deloitte employee</option>
+							<option th:each="employee : ${employees}"
+								th:value="${employee.empId}" th:text="${employee.empFullName}"
+								id="employeeID"></option>
+					</select></td>
+					<td th:if="${#fields.hasErrors('visit.employee')}" class="help-block"
+						th:errors="*{visit.employee}"></td>
+				</tr>
+				
+				<tr>
+					<td>Badge number:</td>
+					<td height="40px"><input type="text" th:field="*{visit.badgeNumber}" 
+					th:value="${visit.badgeNumber}" th:name="${badgeNumber}"/>
+					 <input type="hidden" th:field="*{visit}"
+						th:value="${visit.visitId}" th:text="${visit.visitId}" th:name="${visitId}"/></td> 
+					<td th:if="${#fields.hasErrors('visit.badgeNumber')}" class="help-block"
+						th:errors="*{visit.badgeNumber}"></td>
+				</tr> 
+				
+			</table>
+			<input class="btn btn-info btn-block" type="submit" value="Save the information" />
+		</form>
+	</div>
+</body>
+</html>
+
+

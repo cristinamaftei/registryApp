@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Visitor registration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<!-- <meta name="viewport"
+	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  -->
+<!-- 
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black"> -->
+
+<link rel="stylesheet" href="/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="css/signature-pad.css">
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+function mydownload() {
+		    var filename = /*[[${fileName}]]*/ 'default';
+
+	  if (signaturePad.isEmpty()) {
+		    alert("Please provide a signature first.");
+		  } else {
+		    var dataURL = signaturePad.toDataURL('image/png+xml');
+		    download(dataURL, "signature" + filename + ".png");
+		  }
+}
+/*]]>*/
+</script>
+<!-- 
+<script th:inline="javascript">
+/*<![CDATA[*/
+function logout(){
+	var visitor = /*[[${visitor}]]*/ {};
+	if (signaturePad.isEmpty()) {
+	    alert("Please provide a signature first.");
+	  }else{
+		  visitor.save();
+	  }
+}
+/*]]>*/
+</script> -->
+
+</head>
+<body>
+
+	<div class="container" style="height: 370px">
+		<div>
+			<img src="logo.png" class="img-responsive left-block" width="100"
+				height="50" alt="Logo" />
+		</div>
+		<h3 align="center">Please fill this information in order to register</h3>
+		<br />
+
+		<form action="#" th:action="@{/register}" method="post">
+			<table style="margin-left: 45px">
+				
+				<tr>
+					<td>Full Name:</td>
+					<td height="40px"><input type="text" th:field="*{visitor.fullName}"
+						th:value="${visitor.fullName}"  th:name="${fullName}"/>
+						 <input type="hidden" th:field="*{visitor}"
+						th:value="${visitor.id}" th:text="${visitor.id}" th:name="${id}" /></td>
+					<td th:if="${#fields.hasErrors('visitor.fullName')}"
+						class="help-block" th:errors="*{visitor.fullName}"></td>
+				</tr>
+
+				<tr>
+					<td>Identity card / passport number:</td>
+					<td height="40px"><input type="text" th:field="*{visitor.identityCardInfo}"
+						th:value="${visitor.identityCardInfo}" th:name="${identityCardInfo}"/></td>
+					<td th:if="${#fields.hasErrors('visitor.identityCardInfo')}"
+						class="help-block" th:errors="*{visitor.identityCardInfo}"></td>
+				</tr>
+
+				<tr>
+					<td>E-mail:</td>
+					<td height="40px"><input type="text" th:field="*{visitor.email}"
+						th:value="${visitor.email}" th:name="${email}"/></td>
+					<td th:if="${#fields.hasErrors('visitor.email')}"
+						class="help-block" th:errors="*{visitor.email}"></td>
+				</tr>
+				<tr>
+					<td height="40px">Deloitte employee visited:</td>
+					<td><select class="dropdown" th:field="*{visit.employee}"
+						name="employeeID" id="employeeID">
+							<option value="">Select Deloitte employee</option>
+							<option th:each="employee : ${employees}"
+								th:value="${employee.empId}" th:text="${employee.empFullName}"
+								id="employeeID"></option>
+					</select></td>
+					<td th:if="${#fields.hasErrors('visit.employee')}" class="help-block"
+						th:errors="*{visit.employee}"></td>
+				</tr>
+				
+				<tr>
+					<td>Badge number:</td>
+					<td height="40px"><input type="text" th:field="*{visit.badgeNumber}" 
+					th:value="${visit.badgeNumber}" th:name="${badgeNumber}"/>
+					 <input type="hidden" th:field="*{visit}"
+						th:value="${visit.visitId}" th:text="${visit.visitId}" th:name="${visitId}"/></td> 
+					<td th:if="${#fields.hasErrors('visit.badgeNumber')}" class="help-block"
+						th:errors="*{visit.badgeNumber}"></td>
+				</tr>
+				<tr>
+					<td>Please sign:</td>
+					<td th:id="signature-pad" class="signature-pad"
+						style="height: 300px; width: 600px">
+						<div class="signature-pad--body">
+							<canvas></canvas>
+						</div>
+
+						<div class="signature-pad--footer">
+							<div class="description" style="background: grey">Sign
+								above</div>
+							<div class="signature-pad--actions">
+								<button type="button" class="btn btn-danger btn-block btn-xs"
+									onclick="mydownload()">Save as PNG</button>
+							</div>
+						</div>
+					</td>
+				</tr> 
+			</table>
+
+			<!-- <button type="button" class="btn btn-info btn-block" onclick="logout()" >Save and Logout</button> -->
+			<input class="btn btn-info btn-block" type="submit"
+				value="Save the information" />
+		</form>
+	</div>
+
+	<script src="../js/signature_pad.js"></script>
+	<script src="../js/app.js"></script>
+</body>
+</html>
+
+

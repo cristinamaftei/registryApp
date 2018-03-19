@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Visitors list</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" href="/bootstrap.min.css" media="screen" />
+</head>
+<body>
+	<div class="container" style="margin-top: 50px">
+		<div>
+			<img src="logo.png" class="img-responsive left-block" width="100"
+				height="50" alt="Logo" />
+		</div>
+
+		<div class="row">
+			<div class="col-lg-8 col-md-7 col-sm-6">
+				<h2 align="center">List of visitors</h2>
+
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>Arrival date</th>
+							<th>Arrival time</th>
+							<th>Full name</th>
+							<th>Identity card information</th>
+							<th>Deloitte employee visited</th>
+							<th>Badge number</th>
+							<th>Date of badge receive</th>
+							<th>Date of badge pass/Exit</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="visitor : ${visitors}">
+							<!-- <td th:text="${visitor.id}"></td> -->
+							<td th:datetime-local="${visitor.arrivalDate}"></td>
+							<td th:datetime-local="${visitor.arrivalTime}"></td>
+							<td th:text="${visitor.fullName}"></td>
+							<td th:text="${visitor.identityCardInfo}"></td>
+							<td>
+								<table>
+									<tr th:each="employee : ${visitor.employee}">
+										<td th:text="${employee.empFullName}"></td>
+									</tr>
+								</table>
+							</td>
+							<td th:text="${visitor.badgeNumber}"></td>
+							<td th:date="${visitor.dateOfBadgeReceive}"></td>
+							<td th:date="${visitor.dateOfExit}"></td>
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
