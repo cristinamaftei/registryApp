@@ -1,10 +1,13 @@
 package com.deloittece.com.receptionRegistry.database;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,10 +20,12 @@ import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.domain.Persistable;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "visits")
@@ -41,6 +46,7 @@ public class Visit implements Persistable<Long>{
 	private Employee employee;
 	
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "ARRIVAL_DATE", updatable = false)
 	private Date arrivalDate;
 	
@@ -60,6 +66,42 @@ public class Visit implements Persistable<Long>{
 	@Column(name = "DATE_OF_BADGE_RECEIVE", updatable = false)
 	@ColumnDefault("null")
 	private Date dateOfBadgeReceive;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "BADGE_TYPE")
+	private BadgeType badgeType;
+	
+	@Column(updatable = false)
+	private Timestamp timestamp;
+	
+	@ColumnDefault("false")
+	private boolean exitWasSetAuto;
+
+	
+	
+	public BadgeType getBadgeType() {
+		return badgeType;
+	}
+
+	public void setBadgeType(BadgeType badgeType) {
+		this.badgeType = badgeType;
+	}
+
+	public boolean isExitWasSetAuto() {
+		return exitWasSetAuto;
+	}
+
+	public void setExitWasSetAuto(boolean exitWasSetAuto) {
+		this.exitWasSetAuto = exitWasSetAuto;
+	}
+
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
+	}
 
 	public Long getVisitId() {
 		return visitId;
@@ -130,7 +172,7 @@ public class Visit implements Persistable<Long>{
 	}
 
 	public Visit(Long visitId, Visitor visitor, Employee employee, Date arrivalDate, Date arrivalTime, Date dateOfExit,
-			String badgeNumber, Date dateOfBadgeReceive) {
+			String badgeNumber, Date dateOfBadgeReceive, Timestamp timestamp, boolean exitWasSetAuto, BadgeType badgeType) {
 		super();
 		this.visitId = visitId;
 		this.visitor = visitor;
@@ -140,7 +182,36 @@ public class Visit implements Persistable<Long>{
 		this.dateOfExit = dateOfExit;
 		this.badgeNumber = badgeNumber;
 		this.dateOfBadgeReceive = dateOfBadgeReceive;
+		this.timestamp = timestamp;
+		this.exitWasSetAuto = exitWasSetAuto;
+		this.badgeType = badgeType;
 	}
+	
+	public Visit(Long visitId, Visitor visitor, Employee employee, Date arrivalDate, Date arrivalTime, Date dateOfExit,
+			String badgeNumber, Date dateOfBadgeReceive, boolean exitWasSetAuto, BadgeType badgeType) {
+		super();
+		this.visitId = visitId;
+		this.visitor = visitor;
+		this.employee = employee;
+		this.arrivalDate = arrivalDate;
+		this.arrivalTime = arrivalTime;
+		this.dateOfExit = dateOfExit;
+		this.badgeNumber = badgeNumber;
+		this.dateOfBadgeReceive = dateOfBadgeReceive;
+		this.exitWasSetAuto = exitWasSetAuto;
+		this.badgeType = badgeType;
+	}
+	public Visit(Long visitId, Visitor visitor, Employee employee, 
+			String badgeNumber, boolean exitWasSetAuto, BadgeType badgeType) {
+		super();
+		this.visitId = visitId;
+		this.visitor = visitor;
+		this.employee = employee;
+		this.badgeNumber = badgeNumber;
+		this.exitWasSetAuto = exitWasSetAuto;
+		this.badgeType = badgeType;
+	}
+
 
 	@Override
 	public boolean isNew() {
@@ -151,4 +222,5 @@ public class Visit implements Persistable<Long>{
 	public Long getId() {
 		return visitId;
 	}
+	
 }

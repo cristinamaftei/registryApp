@@ -4,7 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 <link rel="stylesheet" href="/bootstrap.min.css" media="screen" />
+<link rel="stylesheet" href="/css/main.css"/>
 
+<script src="/jquery.js"></script>
+<script src="/jquery.autocomplete.min.js"></script>
+
+<script th:inline="javascript">
+
+$(document).ready(function() {
+
+		 $('#employeeAutocomplete').autocomplete({
+			serviceUrl: '/getEmployees',
+			paramName: "empFullName",
+			delimiter: ",",
+		    onSelect: function (suggestion) {
+		    		document.getElementById("employee").value = suggestion.data;
+ 		    },
+		    transformResult: function(response) {
+		    	
+		         return {
+		            suggestions: $.map($.parseJSON(response), function(employee) {
+		                return { value:employee.empFullName, data: employee.empId };
+		            })
+		        }; 
+		    }	    
+		});
+	});
+</script> 
+<script type="text/javascript">
+function inform(){
+	 alert("Enjoy your visit! Please logout when your visit has finished.");
+}
+</script>
 </head>
 <body>
 
@@ -19,25 +50,22 @@
 		<form action="#" th:action="@{/saveothervisit}" method="post">
 			<table>
 				<tr>
-					<td>Full Name:</td>
+					<td>Full Name *:</td>
 					<td height="40px"><input type="text" th:field="*{visitor.fullName}" />
 					<input type="hidden" th:field="*{visitor.id}" /></td>
 				</tr>
 
 				<tr>
-					<td>Identity card / passport number:</td>
+					<td>Identity card / passport number *:</td>
 					<td height="40px"><input type="text"
 						th:field="*{visitor.identityCardInfo}" /></td>
 				</tr>
-				 <tr>
-					<td height="40px">Deloitte employee visited:</td>
-					<td><select class="dropdown" th:field="*{visit.employee}"
-						name="employeeID" id="employeeID">
-							<option value="">Select Deloitte employee</option>
-							<option th:each="employee : ${employees}"
-								th:value="${employee.empId}" th:text="${employee.empFullName}"
-								id="employeeID"></option>
-					</select></td>
+				<tr>
+					<td>Deloitte employee visited *:</td>
+					<td height="40px" >
+					<input  type ="text" id="employeeAutocomplete"/>
+					<input type="hidden" id="employee" value="" th:field="*{visit.employee}"/>
+					</td>
 					<td th:if="${#fields.hasErrors('visit.employee')}" class="help-block"
 						th:errors="*{visit.employee}"></td>
 				</tr>
@@ -51,9 +79,26 @@
 					<td th:if="${#fields.hasErrors('visit.badgeNumber')}" class="help-block"
 						th:errors="*{visit.badgeNumber}"></td>
 				</tr> 
+				<tr>
+				<td height="40px">BadgeType :</td>
+				<td>
+					<select th:field="${visit.badgeType}">
+					<option value="">Select the badge type</option>
+						<option
+							th:each="badgeType : ${badgeTypes}"
+							th:value="${badgeType}" th:text="${badgeType.displayName}" th:name="${badgeType}" ></option>
+					</select>
+				</td>
+				</tr>
 				
 			</table>
-			<input class="btn btn-info btn-block" type="submit" value="Save the information" />
+			<h4 align="center">The information displayed is correct? Please update and save</h4>
+			<input class="btn btn-info btn-block" type="submit" value="Save the information" onclick="inform()"/>
+		</form>
+		
+		<h4 align="center">The information displayed is NOT correct, these aren't your data? Please click Return button</h4>
+			<form action="/index" method="get">
+			<input class="btn btn-danger btn-block btn-sm" onclick="window.location.href = '/index'" value ="Return"/>
 		</form>
 	</div>
 </body>

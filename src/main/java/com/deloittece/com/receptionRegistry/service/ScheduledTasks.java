@@ -16,7 +16,7 @@ public class ScheduledTasks {
 
 	// runs every Monday at 7
 	//Seconds Minutes Hours  Day of month   Month   Day of week
-	//0 7 * * 1 ?    */5 * * * * ?
+	//0 7 * * 1 ?    */5 * * * * ?   "* 0 7 * * 1"
 	//runs every Monday at 7am
 	@Scheduled(cron = "* 0 7 * * 1")
 	public void updateLogoutInformation() {

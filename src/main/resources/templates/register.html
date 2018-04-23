@@ -4,49 +4,83 @@
 <title>Visitor registration</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<!-- <meta name="viewport"
-	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  -->
-<!-- 
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black"> -->
-
 <link rel="stylesheet" href="/bootstrap.min.css" media="screen" />
-<link rel="stylesheet" href="css/signature-pad.css">
+<link rel="stylesheet" href="/css/jSignature.css"/>
+<link rel="stylesheet" href="/css/main.css"/>
+
+<script src="/jquery.js"></script>
+<script src="/jquery.autocomplete.min.js"></script>
+<script type="text/javascript" src="jSignature.js"></script>
+<script type="text/javascript" src="jSignature.CompressorBase30.js"></script>
+<script type="text/javascript" src="jSignature.CompressorSVG.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
+<!-- details: http://www.unbolt.net/jSignature/ -->
+
+ <script type="text/javascript">
+ $(document).ready(function() {
+	 
+     $("#signature").jSignature({color:"#00f", height: 250, width:600
+    	 });
+   
+ 		$('#button').click(function(){
+     	var dataToBeSaved =  $("#signature").jSignature("getData","base30"); 
+     	document.getElementById("signatureValue").value = dataToBeSaved;
+ 			    
+  		});
+ });
+ 
+ </script>
 
 <script th:inline="javascript">
-/*<![CDATA[*/
-function mydownload() {
-		    var filename = /*[[${fileName}]]*/ 'default';
 
-	  if (signaturePad.isEmpty()) {
-		    alert("Please provide a signature first.");
-		  } else {
-		    var dataURL = signaturePad.toDataURL('image/png+xml');
-		    download(dataURL, "signature" + filename + ".png");
-		  }
+$(document).ready(function() {
+
+		 $('#employeeAutocomplete').autocomplete({
+			serviceUrl: '/getEmployees',
+			paramName: "empFullName",
+			delimiter: ",",
+		    onSelect: function (suggestion) {
+		    		document.getElementById("employee").value = suggestion.data;
+ 		    },
+		    transformResult: function(response) {
+		    	
+		         return {
+		            suggestions: $.map($.parseJSON(response), function(employee) {
+		                return { value:employee.empFullName, data: employee.empId };
+		            })
+		        }; 
+		    }	    
+		});
+	});
+
+function inform(){
+	 alert("Enjoy your visit! Please logout when your visit has finished.");
 }
-/*]]>*/
-</script>
-<!-- 
-<script th:inline="javascript">
-/*<![CDATA[*/
-function logout(){
-	var visitor = /*[[${visitor}]]*/ {};
-	if (signaturePad.isEmpty()) {
-	    alert("Please provide a signature first.");
-	  }else{
-		  visitor.save();
+
+/* jQuery.validator.setDefaults({
+	  debug: true,
+	  success: "valid"
+	});
+	$( "#myform" ).validate({
+	  rules: {
+	    type: {
+	      required: function(element) {
+	        return $("#badge").val() != null;
+	      }
+	    }
 	  }
-}
-/*]]>*/
-</script> -->
+	});
+ */
 
+</script> 
 </head>
 <body>
 
 	<div class="container" style="height: 370px">
 		<div>
-			<img src="logo.png" class="img-responsive left-block" width="100"
+			<img src="/logo.png" class="img-responsive left-block" width="100"
 				height="50" alt="Logo" />
 		</div>
 		<h3 align="center">Please fill this information in order to register</h3>
@@ -56,17 +90,17 @@ function logout(){
 			<table style="margin-left: 45px">
 				
 				<tr>
-					<td>Full Name:</td>
+					<td>Full Name *:</td>
 					<td height="40px"><input type="text" th:field="*{visitor.fullName}"
 						th:value="${visitor.fullName}"  th:name="${fullName}"/>
 						 <input type="hidden" th:field="*{visitor}"
-						th:value="${visitor.id}" th:text="${visitor.id}" th:name="${id}" /></td>
+						th:value="${visitor.id}" th:text="${visitor.id}" th:name="${id}"/></td>
 					<td th:if="${#fields.hasErrors('visitor.fullName')}"
 						class="help-block" th:errors="*{visitor.fullName}"></td>
 				</tr>
 
 				<tr>
-					<td>Identity card / passport number:</td>
+					<td>Identity card/passport number *:</td>
 					<td height="40px"><input type="text" th:field="*{visitor.identityCardInfo}"
 						th:value="${visitor.identityCardInfo}" th:name="${identityCardInfo}"/></td>
 					<td th:if="${#fields.hasErrors('visitor.identityCardInfo')}"
@@ -81,20 +115,16 @@ function logout(){
 						class="help-block" th:errors="*{visitor.email}"></td>
 				</tr>
 				<tr>
-					<td height="40px">Deloitte employee visited:</td>
-					<td><select class="dropdown" th:field="*{visit.employee}"
-						name="employeeID" id="employeeID">
-							<option value="">Select Deloitte employee</option>
-							<option th:each="employee : ${employees}"
-								th:value="${employee.empId}" th:text="${employee.empFullName}"
-								id="employeeID"></option>
-					</select></td>
+					<td>Deloitte employee visited *:</td>
+					<td height="40px" >
+					<input  type ="text" id="employeeAutocomplete"/>
+					<input type="hidden" id="employee" value="" th:field="*{visit.employee}"/>
+					</td>
 					<td th:if="${#fields.hasErrors('visit.employee')}" class="help-block"
 						th:errors="*{visit.employee}"></td>
 				</tr>
-				
 				<tr>
-					<td>Badge number:</td>
+					<td>Badge number (if you receive a badge):</td>
 					<td height="40px"><input type="text" th:field="*{visit.badgeNumber}" 
 					th:value="${visit.badgeNumber}" th:name="${badgeNumber}"/>
 					 <input type="hidden" th:field="*{visit}"
@@ -102,35 +132,31 @@ function logout(){
 					<td th:if="${#fields.hasErrors('visit.badgeNumber')}" class="help-block"
 						th:errors="*{visit.badgeNumber}"></td>
 				</tr>
+				
 				<tr>
-					<td>Please sign:</td>
-					<td th:id="signature-pad" class="signature-pad"
-						style="height: 300px; width: 600px">
-						<div class="signature-pad--body">
-							<canvas></canvas>
-						</div>
+				<td height="40px">BadgeType :</td>
+				<td>
+					<select th:field="${visit.badgeType}">
+					<option value="">Select the badge type</option>
+						<option
+							th:each="badgeType : ${badgeTypes}"
+							th:value="${badgeType}" th:text="${badgeType.displayName}" th:name="${badgeType}" ></option>
+					</select>
+				</td>
+				</tr>
+				<tr>
+					<td>Please sign *:</td>
 
-						<div class="signature-pad--footer">
-							<div class="description" style="background: grey">Sign
-								above</div>
-							<div class="signature-pad--actions">
-								<button type="button" class="btn btn-danger btn-block btn-xs"
-									onclick="mydownload()">Save as PNG</button>
-							</div>
-						</div>
+					<td th:id="signature" class="jSignature" />
+					<td><input type="hidden" id="signatureValue" value="" th:field="*{visitor.signature}" />
 					</td>
-				</tr> 
-			</table>
+				</tr>
 
-			<!-- <button type="button" class="btn btn-info btn-block" onclick="logout()" >Save and Logout</button> -->
-			<input class="btn btn-info btn-block" type="submit"
-				value="Save the information" />
+			</table>
+			<input class="btn btn-info btn-block" type="submit" id = "button"
+				value="Save the information" onclick="inform()" />
 		</form>
 	</div>
-
-	<script src="../js/signature_pad.js"></script>
-	<script src="../js/app.js"></script>
+	
 </body>
 </html>
-
-

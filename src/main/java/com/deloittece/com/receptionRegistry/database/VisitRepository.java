@@ -13,7 +13,7 @@ public interface VisitRepository extends CrudRepository<Visit, Long>{
 	
 	@Modifying
 	@Transactional
-    @Query("UPDATE Visit v  SET v.dateOfExit= CURDATE()  WHERE arrivalDate < :date")
+    @Query("UPDATE Visit v  SET v.dateOfExit= CURDATE(), v.exitWasSetAuto = 1 WHERE arrivalDate < :date")
 	void updateExitDate(@Param("date") java.sql.Date date);
 	
 

@@ -1,7 +1,6 @@
 package com.deloittece.com.receptionRegistry.database;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,12 +10,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -52,13 +49,13 @@ public class Visitor implements Persistable<Long> {
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message="Please enter a valid email address")
 	private String email;
 
-	//@Lob
-	@Column(name = "SIGNATURE") //, nullable=false, columnDefinition="mediumblob")
+	@Lob()
+	@Column(name = "SIGNATURE") 
 	private byte[] signature;
 
-	@Column(name = "USER_LOGOUT_AUTO")
-	@ColumnDefault("false")
-	private boolean isUserLogoutAuto;
+//	@Column(name = "USER_LOGOUT_AUTO")
+//	@ColumnDefault("false")
+//	private boolean isUserLogoutAuto;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH, mappedBy = "visitor")
 	private List<Visit>visits = new ArrayList<>();
@@ -107,13 +104,13 @@ public class Visitor implements Persistable<Long> {
 		this.signature = signature;
 	}
 
-	public boolean isUserLogoutAuto() {
-		return isUserLogoutAuto;
-	}
-
-	public void setUserLogoutAuto(boolean isUserLogoutAuto) {
-		this.isUserLogoutAuto = isUserLogoutAuto;
-	}
+//	public boolean isUserLogoutAuto() {
+//		return isUserLogoutAuto;
+//	}
+//
+//	public void setUserLogoutAuto(boolean isUserLogoutAuto) {
+//		this.isUserLogoutAuto = isUserLogoutAuto;
+//	}
 
 	public List<Visit> getVisits() {
 		return visits;
@@ -123,15 +120,14 @@ public class Visitor implements Persistable<Long> {
 		this.visits = visits;
 	}
 
-	public Visitor(Long id, String fullName, String email, String identityCardInfo, byte[] signature,
-			boolean isUserLogoutAuto, List<Visit> visits) {
+	public Visitor(Long id, String fullName, String email, String identityCardInfo, byte[] signature, List<Visit> visits) {
 		super();
 		this.id = id;
 		this.fullName = fullName;
 		this.email = email;
 		this.identityCardInfo = identityCardInfo;
 		this.signature = signature;
-		this.isUserLogoutAuto = isUserLogoutAuto;
+		//this.isUserLogoutAuto = isUserLogoutAuto;
 		this.visits = visits;
 	}
 	
@@ -143,6 +139,12 @@ public class Visitor implements Persistable<Long> {
 		this.identityCardInfo = identityCardInfo;
 	}
 
+	public Visitor( String fullName, String identityCardInfo) {
+		super();
+		this.fullName = fullName;
+		this.identityCardInfo = identityCardInfo;
+	}
+	
 	@Override
 	public boolean isNew() {
 		return this.id== null;
