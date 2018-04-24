@@ -211,7 +211,7 @@ public class RegisterController {
 	}
 
 	@RequestMapping(value = "/savevisitorlogout", method = RequestMethod.POST)
-	public void saveVisitorForLogout(Visitor visitor, Visit visit, HttpServletResponse response) throws IOException {
+	public void saveVisitForLogout(Visitor visitor, Visit visit, HttpServletResponse response) throws IOException {
 		if (visit.getDateOfExit() == null) {
 			visit.setDateOfExit(new Date());
 			visitRepository.save(visit);
