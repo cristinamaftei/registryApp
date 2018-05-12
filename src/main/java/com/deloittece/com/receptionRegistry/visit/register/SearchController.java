@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-public class RegisterController {
+public class SearchController {
 
     //used for validation
     @InitBinder
