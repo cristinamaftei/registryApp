@@ -1,65 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<!-- 
-<meta name="description"
-	content="Signature Pad - HTML5 canvas based smooth signature drawing using variable width spline interpolation."> -->
- 
-<!-- <meta name="viewport"
-	content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  -->
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<!-- <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black"> -->
+        <link rel="stylesheet" href="css/signature-pad.css">
+        <link rel="stylesheet" href="/bootstrap.min.css" />
 
-<link rel="stylesheet" href="css/signature-pad.css">
-<link rel="stylesheet" href="/bootstrap.min.css" />
+        <script src="../js/signature_pad.js"></script>
+        <script src="../js/app.js"></script>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            function mydownload() {
+                var filename = /*[[${fileName}]]*/ 'default';
+                    if (signaturePad.isEmpty()) {
+                        alert("Please provide a signature first.");
+                    } else {
+                        var dataURL = signaturePad.toDataURL('image/png+xml');
+                        download(dataURL, "signature" + filename + ".png");
+                    }
+            }
+            /*]]>*/
+        </script>
+    </head>
+    <body onselectstart="return false">
+        <div class="container" style="height: 410px">
 
-
-<script th:inline="javascript">
-/*<![CDATA[*/
-function mydownload() {
-
-		
-		    var filename = /*[[${fileName}]]*/ 'default';
-
-	  if (signaturePad.isEmpty()) {
-		    alert("Please provide a signature first.");
-		  } else {
-		    var dataURL = signaturePad.toDataURL('image/png+xml');
-		    download(dataURL, "signature" + filename + ".png");
-		  }
-}
-/*]]>*/
-</script> 
-
-</head>
-
-<body onselectstart="return false">
-<div class="container" style="height: 410px">
-
-<div id="signature-pad" class="signature-pad" >
-    <div class="signature-pad--body">
-      <canvas width="auto"></canvas>
-    </div>
-    <div class="signature-pad--footer">
-      <div class="description" style="background: grey">Sign above</div>
-      <div class="signature-pad--actions">
-      <button type="button" class="btn btn-warning btn-block"   onclick="mydownload()">Save as PNG</button>
-         <!--  <input class="btn btn-info btn-block" type="submit" data-action="save-png" value="Save and Logout" /> 
-                <button type="button" style="background: blue" class="button save" onclick="mydownload()">Save as PNG</button>-->
-      </div>
-      
-    </div>
-    
-  </div>
-  <form action="/index" method="get">
-			<input class="btn btn-info btn-block" type="submit" value ="Logout"/>
-		</form>
-  <!-- <input class="btn btn-info btn-block" type="submit" value="Logout" /> -->
-  </div>
-<script src="../js/signature_pad.js"></script>
-<script src="../js/app.js"></script>	
-</body>
+            <div id="signature-pad" class="signature-pad" >
+                <div class="signature-pad--body">
+                    <canvas width="auto"></canvas>
+                </div>
+                <div class="signature-pad--footer">
+                    <div class="description" style="background: grey">Sign above</div>
+                    <div class="signature-pad--actions">
+                    <button type="button" class="btn btn-warning btn-block"   onclick="mydownload()">Save as PNG</button>
+                    </div>
+                </div>
+              </div>
+              <form action="/index" method="get">
+                    <input class="btn btn-info btn-block" type="submit" value ="Logout"/>
+              </form>
+          </div>
+    </body>
 </html>
 

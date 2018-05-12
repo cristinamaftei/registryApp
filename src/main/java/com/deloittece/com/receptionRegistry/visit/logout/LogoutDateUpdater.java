@@ -1,4 +1,4 @@
-package com.deloittece.com.receptionRegistry.service;
+package com.deloittece.com.receptionRegistry.visit.logout;
 
 import java.util.Calendar;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.deloittece.com.receptionRegistry.database.VisitRepository;
 
 @Component
-public class ScheduledTasks {
+public class LogoutDateUpdater {
 	@Autowired
 	private VisitRepository visitRepository;
 
