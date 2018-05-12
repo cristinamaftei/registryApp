@@ -10,16 +10,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @EnableJpaAuditing
-public class ReceptionRegistryApplication extends SpringBootServletInitializer{
-	
-	public static void main(String[] args) {
-		SpringApplication.run(ReceptionRegistryApplication.class, args);
-	}
-	
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(ReceptionRegistryApplication.class);
-	}
+public class ReceptionRegistryApplication extends SpringBootServletInitializer {
 
+    public static void main(String[] args) {
+        SpringApplication.run(ReceptionRegistryApplication.class, args);
+    }
 
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(ReceptionRegistryApplication.class);
+    }
 }

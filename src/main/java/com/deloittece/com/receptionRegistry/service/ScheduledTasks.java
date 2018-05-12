@@ -7,17 +7,15 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.deloittece.com.receptionRegistry.database.VisitRepository;
-import com.deloittece.com.receptionRegistry.database.VisitorRepository;
 
 @Component
 public class ScheduledTasks {
 	@Autowired
 	private VisitRepository visitRepository;
 
-	// runs every Monday at 7
-	//Seconds Minutes Hours  Day of month   Month   Day of week
-	//0 7 * * 1 ?    */5 * * * * ?   "* 0 7 * * 1"
-	//runs every Monday at 7am
+	// updates the date of exit automatically after one week, for visitors that don't logout
+	// runs every Monday at 7am
+	// Seconds Minutes Hours Day of month Month Day of week
 	@Scheduled(cron = "* 0 7 * * 1")
 	public void updateLogoutInformation() {
 		System.out.println("****************In task ***************");

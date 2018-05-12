@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VisitRepository extends CrudRepository<Visit, Long>{
 	
+	//if the visitor doesn't logout when he finished the visit, the date of exit will be set automatically after one week
 	@Modifying
 	@Transactional
     @Query("UPDATE Visit v  SET v.dateOfExit= CURDATE(), v.exitWasSetAuto = 1 WHERE arrivalDate < :date")

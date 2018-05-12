@@ -26,7 +26,7 @@
 					<td height="40px"><input type="text"
 						th:field="*{visitor.identityCardInfo}"/></td>
 				</tr>
-				 <tr>
+				<tr>
 					<td>Deloitte employee visited:</td>
 					<td height="40px"><input type="text"
 						th:field="*{employee.empFullName}" /> 
@@ -34,22 +34,19 @@
 						<input type="hidden" th:field="*{visit.employee.empId}" />
 						<input type="hidden" th:field="*{visit.badgeNumber}" />
 						</td>
-				</tr>  
-				
-
+				</tr>
 			</table>
-<h4 align="center">The information displayed is correct? Please click Logout/Exit button</h4>
+			
+				<h4 align="center">The information displayed is correct? Please click Logout/Exit button</h4>
 			<input class="btn btn-info btn-block" type="submit"
 				value="Logout/Exit" />
 				
 				<br>
 				
 				<h4 align="center">The information displayed is NOT correct, these aren't your data? Please click Return button</h4>
-			<form action="/index" method="get">
 			<input class="btn btn-danger btn-block btn-sm" onclick="window.location.href = '/index'" value ="Return"/>
 		</form>
 
-		</form>
 	</div>
 </body>
 </html>

@@ -15,17 +15,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class Employee {
 
-//	//for LDAP
-//private String cn;
-//
-//	
-//	public String getCn() {
-//	return cn;
-//}
-//
-//public void setCn(String cn) {
-//	this.cn = cn;
-//}
+	// for LDAP
+	// private String cn;
+	//
+	//
+	// public String getCn() {
+	// return cn;
+	// }
+	//
+	// public void setCn(String cn) {
+	// this.cn = cn;
+	// }
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,9 +34,6 @@ public class Employee {
 
 	@Column(name = "EMP_FULL_NAME")
 	private String empFullName;
-	
-	//@ManyToMany(mappedBy ="employees")
-    //private List<Visitor> visitors;
 
 	public Long getEmpId() {
 		return empId;
